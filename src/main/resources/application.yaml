@@ -11,6 +11,11 @@ spring:
 server:
   port: 1663
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
 inventory:
   url: http://localhost:1664
 
