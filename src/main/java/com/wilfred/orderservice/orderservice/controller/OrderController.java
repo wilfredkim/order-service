@@ -3,6 +3,7 @@ package com.wilfred.orderservice.orderservice.controller;
 import com.wilfred.orderservice.orderservice.model.dto.OrderRequest;
 import com.wilfred.orderservice.orderservice.model.dto.OrderResponse;
 import com.wilfred.orderservice.orderservice.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse placeOrder(@RequestBody OrderRequest orderRequest) {
+    public OrderResponse placeOrder(@RequestBody @Valid OrderRequest orderRequest) {
         log.info("Here::::::::::::");
         var order = orderService.placeOrder(orderRequest);
         return OrderResponse.
