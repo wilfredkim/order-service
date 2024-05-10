@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: default
+  labels:
+    app: order-service
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      # initContainers:
+      # Init containers are exactly like regular containers, except:
+      # - Init containers always run to completion.
+      # - Each init container must complete successfully before the next one starts.
+      containers:
+        - name: order-service
+          image: wilfredkim5/order-service:0.0.1-SNAPSHOT
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 1663
+            initialDelaySeconds: 20
+            timeoutSeconds: 20
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 1663
+            initialDelaySeconds: 20
+            timeoutSeconds: 20
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 20
+          env:
+            - name: MYSQL_HOST
+              value: mysql-0.mysql
+          ports:
+            - containerPort: 1663
+              name: order-service
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service-lb
+  namespace: default
+spec:
+  selector:
+    app: order-service-lb
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: order-service-lb
+      protocol: TCP
+      port: 80
+      targetPort: 1663

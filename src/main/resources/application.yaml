@@ -14,6 +14,12 @@ spring:
 server:
   port: 1663
 
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -21,4 +27,5 @@ springdoc:
     path: /api-docs
 inventory:
   url: http://localhost:1664
+
 
