@@ -68,14 +68,14 @@ metadata:
   namespace: default
 spec:
   selector:
-    app: order-service-lb
-  type: ClusterIP
+    app: order-service
+  type: LoadBalancer
   sessionAffinity: None
   sessionAffinityConfig:
     clientIP:
       timeoutSeconds: 10800
   ports:
-    - name: order-service-lb
+    - name: order-service
       protocol: TCP
       port: 80
       targetPort: 1663
