@@ -53,9 +53,15 @@ spec:
               name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: Adm!n123$
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secret
+                  key: mysql-root-password
             - name: MYSQL_DATABASE
-              value: order_service
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-config-map
+                  key: order-service-database-name
           volumeMounts:
             - name: mysql-persistence-storage
               mountPath: /var/lib/mysql

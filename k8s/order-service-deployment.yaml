@@ -54,7 +54,30 @@ spec:
             periodSeconds: 20
           env:
             - name: MYSQL_HOST
-              value: mysql-0.mysql
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-config-map
+                  key: mysql-database-host
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-config-map
+                  key: mysql-database-port
+            - name: EMPLOYEE_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-config-map
+                  key: order-service-database-name
+            - name: MYSQL_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secret
+                  key: mysql-database-username
+            - name: MYSQL_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secret
+                  key: ysql-root-password
           ports:
             - containerPort: 1663
               name: order-service
