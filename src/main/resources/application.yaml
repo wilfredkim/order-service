@@ -5,7 +5,7 @@ spring:
     #url: jdbc:mysql://localhost:3306/order_service
     #username: root
     #password: Adm!n123$
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${EMPLOYEE_DB_NAME:order_service}
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${ORDER_DB_NAME:order_service}
     #username: ${MYSQL_DB_USERNAME:root}
     #password: ${MYSQL_DB_PASSWORD:Adm!n123$}
     username: ${MYSQL_DB_USERNAME}
