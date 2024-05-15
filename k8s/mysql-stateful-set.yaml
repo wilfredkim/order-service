@@ -59,7 +59,7 @@ spec:
                   key: mysql-root-password
             - name: MYSQL_DATABASE
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: cluster-config-map
                   key: order-service-database-name
           volumeMounts:
