@@ -14,3 +14,18 @@ GET http://127.0.0.1:1663/api/v1/orders
 
 ###
 GET http://127.0.0.1:1663/api/v1/orders/all
+###
+GET http://127.0.0.1:1663/api/v1/orders/1
+###
+
+PUT  http://127.0.0.1:1663/api/v1/orders/7
+Content-Type: application/json
+
+{
+  "orderNumber": "iP15",
+  "skuCode": "iPhone15",
+  "price": "124521",
+  "quantity": "123"
+}
+###
+DELETE  http://127.0.0.1:1663/api/v1/orders/1
