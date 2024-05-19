@@ -39,6 +39,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> getList() {
         return orderService.getList();
     }
