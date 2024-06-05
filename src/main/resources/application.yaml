@@ -1,33 +1,6 @@
 spring:
   application:
     name: order-service
-  datasource:
-    #url: jdbc:mysql://localhost:3306/order_service
-    #username: root
-    #password: Adm!n123$
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${ORDER_DB_NAME:order_service}
-    username: ${MYSQL_DB_USERNAME:root}
-    password: ${MYSQL_DB_PASSWORD:Adm!n123$}
-    #username: ${MYSQL_DB_USERNAME}
-    #password: ${MYSQL_DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: none
-server:
-  port: 1663
-
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: "*"
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-  api-docs:
-    path: /api-docs
-inventory:
-  url: http://localhost:1664
-
+  config:
+    import: optional:configserver:${EUREKA_SERVER_ADDRESS:http://localhost:1666}
 

@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +45,7 @@ class OrderServiceImplTest {
         //given
         OrderRequest orderRequest = OrderRequest.builder().orderNumber("ORD_001").skuCode("ORD_001").price(new BigDecimal(1000)).quantity(100).build();
         //when
-        when(inventoryClient.isInStock(orderRequest.getSkuCode(), orderRequest.getQuantity())).thenReturn(true);
+       // when(inventoryClient.isInStock(orderRequest.getSkuCode(), orderRequest.getQuantity())).thenReturn(true);
         when(orderRepository.save(any(Order.class))).
                 thenReturn(Order.builder().orderNumber("ORD_001").skuCode("ORD_001").price(new BigDecimal(1000)).quantity(100).id(1L).build());
         Order actualResponse = orderServiceImpl.placeOrder(orderRequest);
