@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Builder
@@ -16,4 +17,12 @@ public class OrderRequest {
     @NotEmpty String skuCode;
     @NotNull BigDecimal price;
     Integer quantity;
+    String email;
+    String firstName;
+    String lastName;
+
+    public record UserDetails(String email, String firstName, String lastName) {
+    }
+
 }
+

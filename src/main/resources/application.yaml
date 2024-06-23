@@ -4,3 +4,13 @@ spring:
   config:
     import: optional:configserver:${EUREKA_SERVER_ADDRESS:http://localhost:1666}
 
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: order-placed
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+

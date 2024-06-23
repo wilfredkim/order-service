@@ -1,12 +1,14 @@
 package com.wilfred.orderservice.orderservice.service;
 
 import com.wilfred.orderservice.orderservice.client.InventoryClient;
+import com.wilfred.orderservice.orderservice.event.OrderPlaceEvent;
 import com.wilfred.orderservice.orderservice.model.Order;
 import com.wilfred.orderservice.orderservice.model.dto.OrderRequest;
 import com.wilfred.orderservice.orderservice.model.dto.OrderResponse;
 import com.wilfred.orderservice.orderservice.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,11 +21,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final InventoryClient inventoryClient;
     private final ModelMapper modelMapper;
+    private final KafkaTemplate<String, OrderPlaceEvent> kafkaTemplate;
 
-    public OrderServiceImpl(OrderRepository orderRepository, InventoryClient inventoryClient, ModelMapper modelMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, InventoryClient inventoryClient, ModelMapper modelMapper, KafkaTemplate<String, OrderPlaceEvent> kafkaTemplate) {
         this.orderRepository = orderRepository;
         this.inventoryClient = inventoryClient;
         this.modelMapper = modelMapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public Order placeOrder(OrderRequest orderRequest) {
@@ -38,7 +42,15 @@ public class OrderServiceImpl implements OrderService {
                     .skuCode(orderRequest.getSkuCode())
                     .quantity(orderRequest.getQuantity())
                     .build();
-            return orderRepository.save(order);
+            Order savedOrder = orderRepository.save(order);
+            //send message to kafka topic
+            log.info("Sending to kafka");
+            OrderPlaceEvent orderPlaceEvent = new OrderPlaceEvent(order.getOrderNumber(), orderRequest.getEmail());
+            kafkaTemplate.send("order-placed", orderPlaceEvent);
+            log.info("sent to kafka");
+
+
+            return savedOrder;
         } else
             throw new RuntimeException("Product with skucode " + orderRequest.getOrderNumber() + " is not in stock!");
     }
